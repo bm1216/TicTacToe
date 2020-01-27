@@ -21,8 +21,8 @@ function Square(props) {
         <button 
         className="square"
         onClick={props.onClick}
-        >
-            {props.value}
+        style={{background: (props.isWinner ? 'green' : 'white')}}
+        > {props.value}
         </button>
     )
 }
@@ -44,7 +44,7 @@ function calculateWinner(squares) {
         const [a,b,c] = lines[i];
         if (squares[a] && squares[a] === squares[b]
             && squares[a] === squares[c]) {
-                return squares[a]
+                return {result: squares[a], winners: lines[i]}
         }
     }
 
@@ -53,11 +53,21 @@ function calculateWinner(squares) {
   
 class Board extends React.Component {
 renderSquare(i) {
+    let isWinner = false
+    if (this.props.winner) {
+      if (this.props.winner.winners.includes(i)) {
+        isWinner = true
+      }
+    } else {
+      isWinner = false
+    }
+  
     return (
-    <Square 
-    value={this.props.squares[i]}
-    onClick = {() => this.props.onClick(i)} // can call it anything, Square is not a DOM element.
-    />
+      <Square 
+      value={this.props.squares[i]}
+      onClick = {() => this.props.onClick(i)} // can call it anything, Square is not a DOM element.
+      isWinner = {isWinner}
+      />
     );
 }
 
@@ -137,8 +147,10 @@ class Game extends React.Component {
         'Go to move #' + move : 
         'Go to game start';
       return (
-        <li key={move}>
-          <button onClick={() =>
+        <li key={move} >
+          <button 
+          style={{'fontWeight': (this.state.stepNumber === move ? 'bold' : 'normal') }}
+          onClick={() =>
             this.jumpTo(move)
           }>{desc}</button>
         </li>
@@ -148,7 +160,7 @@ class Game extends React.Component {
 
     let status;
     if (winner) {
-        status = "Winner: " + winner;
+        status = "Winner: " + winner.result;
     } else if (current.squares.every(element => element != null)) {
       status = "It's a Draw!"
     } else {
@@ -161,6 +173,7 @@ class Game extends React.Component {
         <Board
           squares={current.squares}
           onClick={(i) => this.handleClick(i)}
+          winner={calculateWinner(current.squares)}
         />
         </div>
         <div className="game-info">
