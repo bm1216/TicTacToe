@@ -14,28 +14,24 @@ body {
   }
   
   .status {
+    margin-top: 5pt;
     margin-bottom: 10px;
   }
   
   .square {
-    background: #fff;
-    border: 1px solid #999;
+    display: flex;
     float: left;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 34px;
-    height: 34px;
-    margin-right: -1px;
-    margin-top: -1px;
+    align-items: center;
+    justify-content: center;
     padding: 0;
-    text-align: center;
-    width: 34px;
+    width: calc(250px / 3);
+    height: calc(250px / 3);
+    font-size: 32px;
+    color: #111;
+    background-color: #fff;
+    border: 1px solid #999;
   }
 
-  .square .winner {
-    background: rgb(11, 141, 6)
-  }
-  
   .square:focus {
     outline: none;
   }
@@ -47,6 +43,7 @@ body {
   .game {
     display: flex;
     flex-direction: row;
+    background-color: blueviolet;
   }
   
   .game-info {
